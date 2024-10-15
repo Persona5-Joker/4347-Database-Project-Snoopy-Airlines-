@@ -421,6 +421,18 @@
         <mxCell id="RgjEs6uCe0J3DAskhF5g-10" value="Weight" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="1230" y="155" width="80" height="30" as="geometry" />
         </mxCell>
+        <mxCell id="iGP589f37Y-SdBRGMfhL-1" value="" style="endArrow=none;html=1;rounded=0;entryX=0.304;entryY=1.053;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="F5znvIjBPw_iKC_Yl4GG-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1250" y="365" as="sourcePoint" />
+            <mxPoint x="1300" y="315" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iGP589f37Y-SdBRGMfhL-2" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" target="lTAyQwh7JZw7zIpwJ2OX-17">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="660" y="860" as="sourcePoint" />
+            <mxPoint x="720" y="860" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
