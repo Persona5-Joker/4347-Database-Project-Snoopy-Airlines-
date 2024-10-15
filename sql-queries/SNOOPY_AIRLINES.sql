@@ -37,12 +37,6 @@ CREATE TABLE Reservation_Contact (
     FOREIGN KEY (Reservation_ID) REFERENCES Reservation(Reservation_ID)
 );
 
-
-
-
-
-
-
 CREATE TABLE Passenger (
     Passenger_ID INT AUTO_INCREMENT PRIMARY KEY,
     Reservation_ID INT NOT NULL,
@@ -53,7 +47,6 @@ CREATE TABLE Passenger (
 );
 
 -- Baggage table as a weak entity dependent on Passenger
-
 CREATE TABLE Baggage (
     Baggage_ID INT AUTO_INCREMENT,
     Passenger_ID INT,
@@ -61,4 +54,3 @@ CREATE TABLE Baggage (
     PRIMARY KEY (Baggage_ID, Passenger_ID),
     FOREIGN KEY (Passenger_ID) REFERENCES Passenger(Passenger_ID)
 );
-
