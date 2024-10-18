@@ -68,11 +68,11 @@ WHERE Last_Name LIKE 'M%';
 -- Update: Update a passenger's first name and last name.
 UPDATE Passenger
 SET First_Name = 'John Von', Last_Name = 'Neumann'
-WHERE Passenger_ID = 1;
+WHERE Passenger_ID = 3;
 
 -- Delete: Delete a passenger with the id '1' (i.e. John Doe will be deleted).
 DELETE FROM Passenger
-WHERE Passenger_ID = 1;
+WHERE Passenger_ID = 3;
 
 -- QUERIES ON Reservation TABLE (BESIDES INSERTIONS)
 
@@ -97,8 +97,8 @@ WHERE Phone LIKE '214-%';
 -- Update: Update the email and phone number for a specified reservation contact based on Reservation_Contact_ID.
 UPDATE Reservation_Contact
 SET Email = 'johndoe@insertdomain.com', Phone = '555-555-5545'
-WHERE Reservation_Contact_ID = 1;  -- Replace 1 with the actual Reservation_Contact_ID
+WHERE Reservation_Contact_ID = 2;
 
 -- Delete: Delete a reservation contact based on the Reservation_Contact_ID.
 DELETE FROM Reservation_Contact
-WHERE Reservation_Contact_ID = 1;
+WHERE Reservation_Contact_ID = 2;
