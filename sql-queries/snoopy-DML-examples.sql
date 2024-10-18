@@ -55,7 +55,50 @@ WHERE Flight_ID = 3;
 -- DELETE: Delete all flights from the Flight table where the departing location is New York, then display the Flight table
 DELETE FROM Flight
 WHERE Origin = 'New York';
-SELECT 
-    *
-FROM
-    Flight;
+SELECT *
+FROM Flight;
+
+-- QUERIES ON Passenger TABLE (BESIDES INSERTIONS)
+
+-- Query: Display all passenger's last names that start with the letter 'M'.
+SELECT Last_Name
+FROM Passenger
+WHERE Last_Name LIKE 'M%';
+
+-- Update: Update a passenger's first name and last name.
+UPDATE Passenger
+SET First_Name = 'John Von', Last_Name = 'Neumann'
+WHERE Passenger_ID = 1;
+
+-- Delete: Delete a passenger with the id '1' (i.e. John Doe will be deleted).
+DELETE FROM Passenger
+WHERE Passenger_ID = 1;
+
+-- QUERIES ON Reservation TABLE (BESIDES INSERTIONS)
+
+-- Query: Retrieves all reservations along with their booking refrence numbers.
+Select * FROM Reservation;
+
+-- Update: Updates the date and check-in status of a reservation based on the Reservation_ID.
+UPDATE Reservation
+SET Reservation_Date = '2024-10-20 14:30:00', Is_Checked_In = TRUE
+WHERE Reservation_ID = 1;
+
+-- Delete: Deletes a reservation based on the Reservation_ID.
+DELETE FROM Reservation
+WHERE Reservation_ID = 1;
+
+-- QUERIES ON Reservation_Contact TABLE (BESIDES INSERTIONS)
+
+-- Query: List all reservation contact details with phone numbers that begin with '214'.
+SELECT * FROM Reservation_Contact
+WHERE Phone LIKE '214-%';
+
+-- Update: Update the email and phone number for a specified reservation contact based on Reservation_Contact_ID.
+UPDATE Reservation_Contact
+SET Email = 'johndoe@insertdomain.com', Phone = '555-555-5545'
+WHERE Reservation_Contact_ID = 1;  -- Replace 1 with the actual Reservation_Contact_ID
+
+-- Delete: Delete a reservation contact based on the Reservation_Contact_ID.
+DELETE FROM Reservation_Contact
+WHERE Reservation_Contact_ID = 1;
