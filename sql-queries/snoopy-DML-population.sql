@@ -76,7 +76,9 @@ INSERT INTO Reservation (Booking_Reference_Number, Flight_ID, Reservation_Date, 
 ('BR990011', 19, '2024-10-30 08:00:00', FALSE),
 ('BR001122', 20, '2024-10-31 06:00:00', TRUE);
 
-INSERT INTO Reservation_Contact (Reservation_ID, Email, Phone) VALUES
+
+INSERT INTO Reservation_Contact (Reservation_ID, Email, Phone) 
+VALUES 
 (1, 'john.doe@example.com', '972-555-1234'),
 (2, 'jane.smith@example.com', '972-555-5678'),
 (3, 'michael.jones@example.com', '214-555-2345'),
@@ -93,7 +95,8 @@ INSERT INTO Reservation_Contact (Reservation_ID, Email, Phone) VALUES
 (14, 'nancy.harris@example.com', '903-555-7891'),
 (15, 'mark.martin@example.com', '903-555-4568'),
 (16, 'betty.clark@example.com', '214-555-8902'),
-(17, 'george.lewis@example.com', '214-555-567');
+(17, 'george.lewis@example.com', '214-555-5670');  
+
 
 INSERT INTO Passenger (Reservation_ID, First_Name, Last_Name, Date_of_Birth) VALUES
 (1, 'John', 'Doe', '1985-05-12'),
