@@ -128,7 +128,7 @@ WHERE Phone LIKE '214-%';
 -- Update: Update the email and phone number for a specified reservation contact based on Reservation_Contact_ID.
 UPDATE Reservation_Contact
 SET Email = 'johndoe@insertdomain.com', Phone = '555-555-5545'
-WHERE Reservation_Contact_ID = 1;  -- Replace 1 with the actual Reservation_Contact_ID
+WHERE Reservation_Contact_ID = 1;
 
 -- Delete: Delete a reservation contact based on the Reservation_Contact_ID.
 DELETE FROM Reservation_Contact
