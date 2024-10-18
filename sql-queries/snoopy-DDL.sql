@@ -13,13 +13,15 @@ CREATE TABLE Flight (
     Flight_ID INT AUTO_INCREMENT PRIMARY KEY,
     Flight_Number VARCHAR(10) NOT NULL UNIQUE,
     Aircraft_ID INT NOT NULL,
-    Departure DATETIME NOT NULL CHECK (Arrival > Departure), -- Ensure arrival is after departure
+    Departure DATETIME NOT NULL,
     Arrival DATETIME NOT NULL,
     Origin VARCHAR(100) NOT NULL,
-    Destination VARCHAR(100) NOT NULL CHECK (Origin <> Destination), -- Origin and Destination should be different
+    Destination VARCHAR(100) NOT NULL,
     FOREIGN KEY (Aircraft_ID) REFERENCES Aircraft(Aircraft_ID)
         ON DELETE CASCADE 
-        ON UPDATE CASCADE
+        ON UPDATE CASCADE,
+    CHECK (Arrival > Departure), -- Ensure arrival is after departure
+    CHECK (Origin <> Destination) -- Origin and Destination should be different
 );
 
 CREATE TABLE Reservation (
@@ -44,8 +46,9 @@ CREATE TABLE Passenger (
     Reservation_ID INT NOT NULL,
     First_Name VARCHAR(50) NOT NULL,
     Last_Name VARCHAR(50) NOT NULL,
-    Date_of_Birth DATE NOT NULL CHECK (Date_of_Birth < CURDATE()), -- Ensure valid birthdate
-    FOREIGN KEY (Reservation_ID) REFERENCES Reservation(Reservation_ID) ON DELETE CASCADE ON UPDATE CASCADE
+    Date_of_Birth DATE NOT NULL, -- Removed the CHECK constraint
+    FOREIGN KEY (Reservation_ID) REFERENCES Reservation(Reservation_ID)
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Baggage table as a weak entity dependent on Passenger
