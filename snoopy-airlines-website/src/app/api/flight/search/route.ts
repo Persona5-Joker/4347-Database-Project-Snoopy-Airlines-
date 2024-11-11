@@ -8,12 +8,12 @@ export async function GET(request: NextRequest) {
   const origin = searchParams.get("origin");
   const destination = searchParams.get("destination");
   const departure = searchParams.get("departure");
-  const returnDate = searchParams.get('return');
+  const returnDate = searchParams.get("return");
 
- // Outbound flight query
- const [outboundFlights] = await pool.query(
+  const [outboundFlights] = await pool.query(
     `
     SELECT * FROM Flight
+    INNER JOIN Aircraft on Flight.Aircraft_ID = Aircraft.Aircraft_ID
     WHERE Origin = ? 
       AND Destination = ? 
       AND DATE(Departure) = ?
@@ -21,16 +21,20 @@ export async function GET(request: NextRequest) {
     [origin, destination, departure]
   );
 
-  // Return flight query
-  const [returnFlights] = await pool.query(
-    `
+  if (returnDate) {
+    const [returnFlights] = await pool.query(
+      `
     SELECT * FROM Flight
+    INNER JOIN Aircraft on Flight.Aircraft_ID = Aircraft.Aircraft_ID
     WHERE Origin = ? 
       AND Destination = ? 
       AND DATE(Departure) = ?
     `,
-    [destination, origin, returnDate]
-  );
+      [destination, origin, returnDate]
+    );
 
-  return Response.json({outboundFlights, returnFlights});
+    return Response.json({ outboundFlights, returnFlights });
+  } else {
+    return Response.json({ outboundFlights });
+  }
 }

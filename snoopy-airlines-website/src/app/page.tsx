@@ -26,6 +26,7 @@ import { useState } from "react";
 import Image from "next/image";
 import SnoopyBackground from "../../public/snoopy-background.png";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 
 //@ts-expect-error not a big deal here
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -33,16 +34,25 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 export default function Home() {
   const router = useRouter();
   const { data, error, isLoading } = useSWR("/api/flight/locations", fetcher);
+  const [origin, setOrigin] = useState("Dallas");
+  const [destination, setDestination] = useState("Chicago");
+  const [passengers, setPassengers] = useState(1);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: undefined,
   });
 
   function onSearch() {
-    // example query
-    router.push(
-      "/flights?origin=New%20York&destination=Los%20Angeles&departure=2024-10-15&return=2024-10-20"
-    );
+    let query = `/flights?origin=${origin}&destination=${destination}&departure=${format(
+      dateRange?.from ?? "",
+      "yyyy-MM-dd"
+    )}&passengers=${passengers}`;
+
+    if (dateRange?.to) {
+      query += `&return=${format(dateRange?.to ?? "", "yyyy-MM-dd")}`;
+    }
+
+    router.push(query);
   }
 
   if (error) return <div>failed to load</div>;
@@ -71,7 +81,10 @@ export default function Home() {
               <div className="grid grid-cols-2 space-x-2">
                 <div className="space-y-1">
                   <Label htmlFor="name">Origin</Label>
-                  <Select>
+                  <Select
+                    onValueChange={(value) => setOrigin(value)}
+                    defaultValue={origin}
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Dallas" />
                     </SelectTrigger>
@@ -90,7 +103,10 @@ export default function Home() {
                 </div>
                 <div className="space-y-1">
                   <Label>Destination</Label>
-                  <Select>
+                  <Select
+                    onValueChange={(value) => setDestination(value)}
+                    defaultValue={destination}
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Chicago" />
                     </SelectTrigger>
@@ -110,7 +126,7 @@ export default function Home() {
               </div>
               <div className="grid grid-cols-2 space-x-2">
                 <div className="space-y-1">
-                  <Label htmlFor="name">Origin</Label>
+                  <Label htmlFor="name">Dates</Label>
                   <DatePickerWithRange
                     selectedDate={dateRange}
                     onDateChange={setDateRange}
@@ -118,7 +134,33 @@ export default function Home() {
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="name">Passengers</Label>
-                  <Input type="number" min={1} placeholder="1" />
+                  <div className="flex items-center">
+                    <Button
+                      onClick={() =>
+                        setPassengers((prev) => Math.max(1, prev - 1))
+                      }
+                      disabled={passengers <= 1}
+                    >
+                      -
+                    </Button>
+                    <Input
+                      value={passengers}
+                      readOnly
+                      type="text"
+                      min={1}
+                      max={5}
+                      placeholder="1"
+                      className="text-center w-full"
+                    />
+                    <Button
+                      onClick={() =>
+                        setPassengers((prev) => Math.min(5, prev + 1))
+                      }
+                      disabled={passengers >= 5}
+                    >
+                      +
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -132,7 +174,7 @@ export default function Home() {
             <CardHeader>
               <CardTitle>Manage Trip / Check-in</CardTitle>
               <CardDescription>
-                Change your password here. After saving, you'll be logged out.
+                Change your password here. After saving, you will be logged out.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
