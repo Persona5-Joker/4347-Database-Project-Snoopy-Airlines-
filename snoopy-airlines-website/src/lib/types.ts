@@ -1,7 +1,7 @@
 export interface CreateReservationRequest {
   outboundFlightId: string;
   returnFlightId?: string;
-  passengers: Passenger;
+  passengers: Passenger[];
 }
 
 export interface Passenger {
