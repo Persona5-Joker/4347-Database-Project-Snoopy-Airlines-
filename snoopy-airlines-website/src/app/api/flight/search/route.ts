@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
   const pool = getPool();
+  const connection = await pool.getConnection();
   const searchParams = request.nextUrl.searchParams;
 
   const origin = searchParams.get("origin");
@@ -10,7 +11,7 @@ export async function GET(request: NextRequest) {
   const departure = searchParams.get("departure");
   const returnDate = searchParams.get("return");
 
-  const [outboundFlights] = await pool.query(
+  const [outboundFlights] = await connection.query(
     `
     SELECT * FROM Flight
     INNER JOIN Aircraft on Flight.Aircraft_ID = Aircraft.Aircraft_ID
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest) {
   );
 
   if (returnDate) {
-    const [returnFlights] = await pool.query(
+    const [returnFlights] = await connection.query(
       `
     SELECT * FROM Flight
     INNER JOIN Aircraft on Flight.Aircraft_ID = Aircraft.Aircraft_ID
@@ -33,6 +34,7 @@ export async function GET(request: NextRequest) {
       [destination, origin, returnDate]
     );
 
+    connection.release();
     return Response.json({ outboundFlights, returnFlights });
   } else {
     return Response.json({ outboundFlights });
