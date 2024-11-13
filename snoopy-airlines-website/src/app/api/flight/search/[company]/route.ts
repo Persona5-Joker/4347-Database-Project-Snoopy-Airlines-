@@ -13,7 +13,7 @@ const modelViewMap = {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { company: string } }
+  { params }: { params: Promise<{ company: string }> }
 ) {
   const pool = getPool();
   const connection = await pool.getConnection();
@@ -37,16 +37,10 @@ export async function GET(
       connection.release();
       console.error(error);
       // Return a 500 error with a clear message
-      return Response.json(
-        null,
-        { status: 500 }
-      );
+      return Response.json(null, { status: 500 });
     }
   } else {
     connection.release();
-    return Response.json(
-      null,
-      { status: 500 }
-    );
+    return Response.json(null, { status: 500 });
   }
 }

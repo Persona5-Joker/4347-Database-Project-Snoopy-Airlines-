@@ -16,7 +16,6 @@ export interface SimpleFlightInfoProps {
 
 export default function SimpleFlightInfo({
   flight,
-  selected = false,
   onClick,
 }: SimpleFlightInfoProps) {
   return (

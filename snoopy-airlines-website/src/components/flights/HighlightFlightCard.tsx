@@ -87,11 +87,24 @@ const HighlightFlightsCard = () => {
             )}
             {flights ? (
               <ul className="mt-4 space-y-2">
-                {flights.flights.map((flight: any, index: number) => (
-                  <li key={index} className="flex items-center justify-between">
-                    <SimpleFlightInfo flight={flight} />
-                  </li>
-                ))}
+                {flights.flights.map(
+                  (
+                    flight: {
+                      Flight_Number: string;
+                      Model: string;
+                      Origin: string;
+                      Destination: string;
+                    },
+                    index: number
+                  ) => (
+                    <li
+                      key={index}
+                      className="flex items-center justify-between"
+                    >
+                      <SimpleFlightInfo flight={flight} />
+                    </li>
+                  )
+                )}
               </ul>
             ) : (
               <>

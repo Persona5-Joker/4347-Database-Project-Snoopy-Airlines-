@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import React, { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Snoopy Airlines",
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-gradient-to-b from-blue-300 via-sky-200 to-yellow-100">
-        <Navbar />
-        {children}
+        <Suspense fallback={<div>Loading...</div>}>
+          <Navbar />
+          {children}
+        </Suspense>
       </body>
     </html>
   );

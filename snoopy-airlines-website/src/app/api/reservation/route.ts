@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     }
 
     // Step 2: Create Passengers
-    let passengerIds = [];
+    const passengerIds = [];
     for (const passenger of passengers) {
       const [result] = await connection.execute(
         `
@@ -60,8 +60,8 @@ export async function POST(req: Request) {
     }
 
     // Step 3: Create Passenger Reservation
-    let outboundPassengerReservationIds = [];
-    let returningPassengerReservationIds = [];
+    const outboundPassengerReservationIds = [];
+    const returningPassengerReservationIds = [];
     for (const passengerId of passengerIds) {
       const [result] = await connection.execute(
         `
@@ -98,7 +98,7 @@ export async function POST(req: Request) {
       const baggages = passengers[i].baggageWeights;
 
       for (let j = 0; j < baggages.length; j++) {
-        const [baggageResult] = await connection.execute(
+        await connection.execute(
           `
           INSERT INTO Baggage (Passenger_Reservation_ID, Weight) VALUES
           (?, ?);
@@ -107,7 +107,7 @@ export async function POST(req: Request) {
         );
 
         if (returningReservationResult) {
-          const [returningBaggageResult] = await connection.execute(
+          await connection.execute(
             `
               INSERT INTO Baggage (Passenger_Reservation_ID, Weight) VALUES
               (?, ?);
@@ -125,7 +125,7 @@ export async function POST(req: Request) {
         "$1-$2-$3"
       );
 
-      const [outboundReservationContactResult] = await connection.execute(
+      await connection.execute(
         `
             INSERT INTO Reservation_Contact (Reservation_ID, Email, Phone) 
             VALUES 
@@ -139,7 +139,7 @@ export async function POST(req: Request) {
       );
 
       if (returningReservationResult) {
-        const [outboundReservationContactResult] = await connection.execute(
+        await connection.execute(
           `
                 INSERT INTO Reservation_Contact (Reservation_ID, Email, Phone) 
                 VALUES 
