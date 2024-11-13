@@ -59,6 +59,12 @@ export function DatePickerWithRange({
             selected={selectedDate}
             onSelect={onDateChange}
             numberOfMonths={2}
+            disabled={(date) => {
+              const filterDate = new Date();
+              filterDate.setDate(filterDate.getDate() - 1)
+
+              return date < filterDate;
+            }}
           />
         </PopoverContent>
       </Popover>

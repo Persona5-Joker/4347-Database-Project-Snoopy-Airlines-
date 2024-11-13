@@ -14,8 +14,12 @@ import Flight, { FlightCardProps } from "@/components/flights/Flight";
 import { Button } from "@/components/ui/button"; // Assuming you have a Button component
 import { useState } from "react";
 
-//@ts-expect-error not a big deal here
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+const fetcher = (url: string) => fetch(url).then(r => {
+  if (!r.ok) {
+      throw new Error('Something went wrong with the request')
+  }
+  return r.json()
+}) 
 
 export default function Home() {
   const router = useRouter();
@@ -71,7 +75,7 @@ export default function Home() {
   const showReturnError = returnTo && !returnFlights.length;
 
   return (
-    <div className="w-full flex justify-center items-center min-h-screen">
+    <div className="w-full flex justify-center items-center min-h-screen my-8">
       <Card className="min-h-[400px] w-[800px]">
         <CardHeader className="relative">
           <CardTitle className="z-10">

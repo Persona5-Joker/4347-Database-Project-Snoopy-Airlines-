@@ -37,6 +37,7 @@ export async function GET(request: NextRequest) {
     connection.release();
     return Response.json({ outboundFlights, returnFlights });
   } else {
+    connection.release();
     return Response.json({ outboundFlights });
   }
 }
