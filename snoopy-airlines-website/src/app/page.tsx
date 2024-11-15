@@ -206,8 +206,7 @@ if (error)
               <CardHeader>
                 <CardTitle>Manage Trip / Check-in</CardTitle>
                 <CardDescription>
-                  View or update your trip details, check in for your flight,
-                  and access boarding passes.
+                  View or update your trip details and check in for your flight!
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
