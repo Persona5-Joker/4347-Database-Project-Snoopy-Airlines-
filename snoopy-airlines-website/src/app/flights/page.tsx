@@ -14,17 +14,18 @@ import Flight, { FlightCardProps } from "@/components/flights/Flight";
 import { Button } from "@/components/ui/button"; // Assuming you have a Button component
 import { useState } from "react";
 
-const fetcher = (url: string) => fetch(url).then(r => {
-  if (!r.ok) {
-      throw new Error('Something went wrong with the request')
-  }
-  return r.json()
-}) 
+const fetcher = (url: string) =>
+  fetch(url).then((r) => {
+    if (!r.ok) {
+      throw new Error("Something went wrong with the request");
+    }
+    return r.json();
+  });
 
 export default function Home() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const returnTo = searchParams.get("returnTo");
+  const returnTo = searchParams.get("return");
 
   const { data, error, isLoading } = useSWR(
     `/api/flight/search?${searchParams.toString()}`,
@@ -66,13 +67,38 @@ export default function Home() {
     router.push(url);
   };
 
-  if (error) return <div>Failed to load</div>;
-  if (isLoading) return <div className="min-h-screen">Loading...</div>;
+  // Error screen with a friendly message and retry button
+  if (error)
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-red-50 p-6">
+        <h2 className="text-3xl font-bold text-red-600">
+          Oops! Something went wrong
+        </h2>
+        <p className="text-xl text-gray-600 mt-4">
+          We could not load the page. Please try again later.
+        </p>
+        <Button className="mt-6" onClick={() => window.location.reload()}>
+          Retry
+        </Button>
+      </div>
+    );
+
+  // Loading screen with a custom spinner and message
+  if (isLoading)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center flex flex-row justify-center">
+          <p className="mt-4 text-xl text-gray-500">
+            Loading Snoopy Airlines information...
+          </p>
+        </div>
+      </div>
+    );
 
   const outboundFlights = data?.outboundFlights || [];
   const returnFlights = data?.returnFlights || [];
-  const showOutboundError = !outboundFlights.length && !returnTo;
-  const showReturnError = returnTo && !returnFlights.length;
+  const showOutboundError = outboundFlights.length == 0 && !returnTo;
+  const showReturnError = returnTo && returnFlights.length == 0;
 
   return (
     <div className="w-full flex justify-center items-center min-h-screen my-8">
@@ -99,6 +125,7 @@ export default function Home() {
               </p>
             </div>
           )}
+
           {showReturnError && (
             <div className="bg-red-100 text-red-800 border border-red-300 rounded-md p-4">
               <p className="font-semibold">
@@ -110,6 +137,7 @@ export default function Home() {
               </p>
             </div>
           )}
+
           {!showOutboundError && (
             <>
               <h2 className="font-extrabold text-lg">
@@ -142,6 +170,7 @@ export default function Home() {
                 <Flight
                   key={flight.Flight_ID}
                   flight={flight}
+                  selected={selectedReturningFlight === flight.Flight_ID}
                   onClick={() =>
                     setSelectedReturningFlight(
                       handleFlightSelect(

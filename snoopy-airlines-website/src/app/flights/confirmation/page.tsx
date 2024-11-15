@@ -29,19 +29,45 @@ export default function ConfirmationPage() {
 
   // Fetch departure booking details
   const { data: departureBooking, error: departureError } = useSWR(
-    departureBookingId ? `/api/reservation/${departureBookingId}` : null,
+    departureBookingId
+      ? `/api/reservation/booking/${departureBookingId}`
+      : null,
     fetcher
   );
 
   // Fetch return booking details if it exists
   const { data: returnBooking, error: returnError } = useSWR(
-    returnBookingId ? `/api/reservation/${returnBookingId}` : null,
+    returnBookingId ? `/api/reservation/booking/${returnBookingId}` : null,
     fetcher
   );
 
   if (departureError || returnError)
-    return <div>Error loading booking details.</div>;
-  if (!departureBooking) return <div className="min-h-screen">Loading...</div>;
+    return (
+      // Error screen with a friendly message and retry button
+
+      <div className="min-h-screen flex flex-col items-center justify-center bg-red-50 p-6">
+        <h2 className="text-3xl font-bold text-red-600">
+          Oops! Something went wrong
+        </h2>
+        <p className="text-xl text-gray-600 mt-4">
+          We could not load the page. Please try again later.
+        </p>
+        <Button className="mt-6" onClick={() => window.location.reload()}>
+          Retry
+        </Button>
+      </div>
+    );
+
+  if (!departureBooking)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center flex flex-row justify-center">
+          <p className="mt-4 text-xl text-gray-500">
+            Loading Snoopy Airlines information...
+          </p>
+        </div>
+      </div>
+    );
 
   return (
     <div className="flex justify-center items-center min-h-screen my-8">
@@ -68,6 +94,12 @@ export default function ConfirmationPage() {
               <strong>Departure Time:</strong>{" "}
               {new Date(
                 departureBooking.flightDetails.departureTime
+              ).toLocaleString()}
+            </div>
+            <div>
+              <strong>Arrival Time:</strong>{" "}
+              {new Date(
+                departureBooking.flightDetails.arrivalTime
               ).toLocaleString()}
             </div>
             <div>

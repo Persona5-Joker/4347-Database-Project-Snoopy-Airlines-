@@ -27,19 +27,21 @@ import Image from "next/image";
 import SnoopyBackground from "../../public/snoopy-background.png";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
-import HighlightFlightsCard from "@/components/flights/HighlightFlightCard";
+import HighlightAircraftCard from "@/components/flights/HighlightAircraftCard";
 
-const fetcher = (url: string) => fetch(url).then(r => {
-  if (!r.ok) {
-      throw new Error('Something went wrong with the request')
-  }
-  return r.json()
-}) 
+const fetcher = (url: string) =>
+  fetch(url).then((r) => {
+    if (!r.ok) {
+      throw new Error("Something went wrong with the request");
+    }
+    return r.json();
+  });
 
 export default function Home() {
   const router = useRouter();
   const { data, error, isLoading } = useSWR("/api/flight/locations", fetcher);
   const [origin, setOrigin] = useState("Dallas");
+  const [booking, setBooking] = useState("");
   const [destination, setDestination] = useState("Chicago");
   const [passengers, setPassengers] = useState(1);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -60,8 +62,32 @@ export default function Home() {
     router.push(query);
   }
 
-  if (error) return <div className="min-h-screen">failed to load</div>;
-  if (isLoading) return <div className="min-h-screen">loading...</div>;
+ // Loading screen with a custom spinner and message
+ if (isLoading)
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center flex flex-row justify-center">
+        <p className="mt-4 text-xl text-gray-500">Loading Snoopy Airlines information...</p>
+      </div>
+    </div>
+  );
+
+// Error screen with a friendly message and retry button
+if (error)
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-red-50 p-6">
+      <h2 className="text-3xl font-bold text-red-600">Oops! Something went wrong</h2>
+      <p className="text-xl text-gray-600 mt-4">
+        We could not load the page. Please try again later.
+      </p>
+      <Button
+        className="mt-6"
+        onClick={() => window.location.reload()}
+      >
+        Retry
+      </Button>
+    </div>
+  );
 
   return (
     <div className="w-full flex flex-col justify-center items-center min-h-screen my-8">
@@ -180,21 +206,32 @@ export default function Home() {
               <CardHeader>
                 <CardTitle>Manage Trip / Check-in</CardTitle>
                 <CardDescription>
-                  Change your password here. After saving, you will be logged out.
+                  View or update your trip details, check in for your flight,
+                  and access boarding passes.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="space-y-1">
-                  <Label htmlFor="current">Current password</Label>
-                  <Input id="current" type="password" />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="new">New password</Label>
-                  <Input id="new" type="password" />
+                  <Label htmlFor="current">Booking Reference Number</Label>
+                  <Input
+                    id="current"
+                    type="text"
+                    placeholder="BRXXXXXX"
+                    value={booking}
+                    onChange={(e) => setBooking(e.currentTarget.value)}
+                  />
                 </div>
               </CardContent>
               <CardFooter>
-                <Button>Save password</Button>
+                <Button
+                  onClick={() =>
+                    router.push(
+                      `/reservation/manage-trip?bookingReference=${booking}`
+                    )
+                  }
+                >
+                  Search
+                </Button>
               </CardFooter>
             </Card>
           </TabsContent>
@@ -219,7 +256,7 @@ export default function Home() {
         </div>
       </div>
 
-      <HighlightFlightsCard />
+      <HighlightAircraftCard />
     </div>
   );
 }

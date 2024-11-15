@@ -31,6 +31,7 @@ export type BookingFlightDetails = {
 };
 
 export type BookingPassenger = {
+  id: number,
   firstName: string;
   lastName: string;
   dob: string; // ISO date string

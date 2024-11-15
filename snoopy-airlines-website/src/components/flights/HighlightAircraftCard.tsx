@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import {
   Card,
@@ -14,7 +14,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import SimpleFlightInfo from "./SimpleFlightInfo";
+import AircraftInfo from "./AircraftInfo";
 
 const fetcher = (url: string) =>
   fetch(url).then((r) => {
@@ -24,16 +24,16 @@ const fetcher = (url: string) =>
     return r.json();
   });
 
-const HighlightFlightsCard = () => {
+const HighlightAircraftCard = () => {
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
-  const { data: companies, error: modelsError } = useSWR(
-    "/api/flight/company",
+  const { data: companies, error: companiesError } = useSWR(
+    "/api/aircraft/company",
     fetcher
   );
 
-  // Fetch the flights for the selected model
-  const { data: flights, error: flightsError } = useSWR(
-    selectedCompany ? `/api/flight/search/${selectedCompany}` : null,
+  // Fetch the aircraft models for the selected company
+  const { data: aircraft, error: aircraftError } = useSWR(
+    selectedCompany ? `/api/aircraft/list/company/${selectedCompany}` : null,
     fetcher
   );
 
@@ -41,18 +41,24 @@ const HighlightFlightsCard = () => {
     setSelectedCompany(company);
   };
 
+  // Update the selected company when companies data is available
+  useEffect(() => {
+    if (companies && companies.length > 0) {
+      setSelectedCompany(companies[0]);
+    }
+  }, [companies]);
+
   return (
     <Card className="w-[1100px] min-h-[400px] mt-12">
       <CardHeader>
-        <CardTitle>Want to see some of our highlighted flights?</CardTitle>
+        <CardTitle>Explore our highlighted aircraft models</CardTitle>
         <CardDescription>
-          Feel free to explore each company and their corresponding past
-          flights.
+          Select a company to view their available aircraft models.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {modelsError && (
-          <p className="text-red-500">Failed to load available models.</p>
+        {companiesError && (
+          <p className="text-red-500">Failed to load available companies.</p>
         )}
 
         <Select
@@ -60,7 +66,7 @@ const HighlightFlightsCard = () => {
           value={selectedCompany ?? ""}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select an aircraft model" />
+            <SelectValue placeholder="Select an aircraft company" />
           </SelectTrigger>
           <SelectContent>
             {companies ? (
@@ -71,7 +77,7 @@ const HighlightFlightsCard = () => {
               ))
             ) : (
               <SelectItem value="disabled" disabled>
-                No models available
+                No companies available
               </SelectItem>
             )}
           </SelectContent>
@@ -80,20 +86,20 @@ const HighlightFlightsCard = () => {
         {selectedCompany && (
           <div className="mt-6">
             <h2 className="text-lg font-semibold">
-              Flights for {selectedCompany}
+              Aircraft for {selectedCompany}
             </h2>
-            {flightsError && (
-              <p className="mt-4 text-red-500">Failed to load flights.</p>
+            {aircraftError && (
+              <p className="mt-4 text-red-500">Failed to load aircraft data.</p>
             )}
-            {flights ? (
+            {aircraft ? (
               <ul className="mt-4 space-y-2">
-                {flights.flights.map(
+                {aircraft.models.map(
                   (
-                    flight: {
-                      Flight_Number: string;
+                    aircraft: {
                       Model: string;
-                      Origin: string;
-                      Destination: string;
+                      Has_Wifi: number;
+                      Has_Power_Outlets: number;
+                      Number_Of_Seats: number;
                     },
                     index: number
                   ) => (
@@ -101,15 +107,15 @@ const HighlightFlightsCard = () => {
                       key={index}
                       className="flex items-center justify-between"
                     >
-                      <SimpleFlightInfo flight={flight} />
+                      <AircraftInfo aircraft={aircraft} />
                     </li>
                   )
                 )}
               </ul>
             ) : (
               <>
-                {!flightsError && (
-                  <p className="mt-4 text-gray-500">Loading flights...</p>
+                {!aircraftError && (
+                  <p className="mt-4 text-gray-500">Loading aircraft...</p>
                 )}
               </>
             )}
@@ -120,4 +126,4 @@ const HighlightFlightsCard = () => {
   );
 };
 
-export default HighlightFlightsCard;
+export default HighlightAircraftCard;
