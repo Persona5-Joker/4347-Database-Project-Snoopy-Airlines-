@@ -3,7 +3,7 @@ Our project aims to design and develop an Airline Database Management System tha
 
 ## Snoopy Airlines Setup Procedure:
 1. Download Node.js [using this resource](https://nodejs.org/en/download/package-manager).
-2. Clone this repository to your local machine: **git clone https://github.com/Persona5-Joker/4347.005-Snoopy-Airlines.git**.
+2. Clone this repository to your local machine.
 3. Inside your local version of this repository, run **cd snoopy-airlines-website**, then run **npm install**.
 4. Create the Snoopy Airlines database using DDL to define the tables and DML to execute the population queries. Then, include a VIEW for this database.
 5. Copy over the **template.env** into just **.env**.
