@@ -1,7 +1,7 @@
 ## Project Description:
 Our project aims to design and develop an Airline Database Management System that will enhance the operational efficiency of an airline. The system will manage critical functions such as flight scheduling, passenger reservations, baggage check-in, and aircraft tracking.
 
-**Contributors:** Danielle Bryan (CS), Wei Yuan Liew (CS), Tanvi Nair (DS), Dandan Wang (CS), Mandy Hardono (CE), Laura Pinto (CE), Meyli Colmenero (CE), Fernando Portillo (CE), Hunter Matthews (CE), and Shreyaa Arun (SE).
+**Contributors:** Danielle Bryan (CS), Wei Yuan Liew (CS), Tanvi Nair (DS), Dandan Wang (CS), Mandy Hardono (CE), Laura Pinto (CE), Meyli Colmenero (CE), Fernando Portillo (CE), Hunter Matthews (CS), and Shreyaa Arun (SE).
 
 ## Development Environment Setup Procedure:
 1. Download Node.js [using this resource](https://nodejs.org/en/download/package-manager).
