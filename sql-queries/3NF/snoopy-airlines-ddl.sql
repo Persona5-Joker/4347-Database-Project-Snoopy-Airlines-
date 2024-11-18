@@ -71,5 +71,5 @@ CREATE TABLE Baggage (
     PRIMARY KEY (Baggage_ID, Passenger_Reservation_ID),
     FOREIGN KEY (Passenger_Reservation_ID)
         REFERENCES Passenger_Reservation(Passenger_Reservation_ID)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE CASCADE ON UPDATE CASCADE  
 );
